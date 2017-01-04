@@ -1,6 +1,8 @@
 #
 bin_PROGRAMS = ucmima
-rmodel_SOURCES = button.f \
+ucmima_SOURCES = dimensions.inc \
+button.inc \
+button.f \
 buttqbr.f \
 buttqcf.f \
 buttqch.f \
@@ -31,4 +33,5 @@ rpgenv.f \
 rpgeras.f \
 rpgerasb.f \
 rpgerasw.f \
+systemfunction.f \
 ucmima.f

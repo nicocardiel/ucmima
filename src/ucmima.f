@@ -171,7 +171,7 @@ C..............................................................................
           WRITE(*,200)
           WRITE(*,101) '* Directorio actual de ficheros FITS '//
      +     '(*.fts, *.fits):'
-          ISYSTEM=SYSTEMFUNCTION('ls *.fts\0')
+          ISYSTEM=SYSTEMFUNCTION('ls *.fts *.fits')
           WRITE(*,200)
           CALL HELPTEXT('Introducir nombre de fichero con imagen '//
      +     'en formato FITS (*.fts)')
@@ -257,7 +257,7 @@ C..............................................................................
           WRITE(*,200)
           WRITE(*,101) '* Directorio actual de ficheros FITS '//
      +     '(*.fts, *.fits):'
-          ISYSTEM=SYSTEMFUNCTION('ls *.fts\0')
+          ISYSTEM=SYSTEMFUNCTION('ls *.fts *.fits')
           WRITE(*,200)
           CALL HELPTEXT('Introducir nombre de fichero para salvar '//
      +     'la imagen actual en formato FITS.')
