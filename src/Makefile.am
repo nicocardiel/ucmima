@@ -35,3 +35,5 @@ rpgerasb.f \
 rpgerasw.f \
 systemfunction.f \
 ucmima.f
+
+ucmima_LDADD = $(CFITSIO_LIBS) $(PGPLOT_LDFLAGS)

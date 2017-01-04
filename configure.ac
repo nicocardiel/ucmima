@@ -39,6 +39,7 @@ esac
 AC_MSG_RESULT(LDFLAGS set to... $LDFLAGS)
 AC_CHECK_LIB([X11], main,,AC_MSG_ERROR(X11 library not found))
 AC_CHECK_LIB([pgplot], main,,AC_MSG_ERROR(pgplot library not found))
+PKG_CHECK_MODULES([CFITSIO], [cfitsio])
 # Define in LIBS all the previous libraries
 LIBS="$LIBS"
 AC_MSG_RESULT(LIBS set to... $LIBS)

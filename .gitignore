@@ -1,0 +1,23 @@
+syntax: glob
+
+.gitignore~
+Makefile
+Makefile.in
+aclocal.m4
+autom4te.cache/
+compile
+config.h
+config.h.in
+config.log
+config.status
+configure
+depcomp
+install-sh
+missing
+src/Makefile
+src/Makefile.in
+src/dimensions.inc
+src/ucmima.dSYM/
+src/*.o
+src/ucmima
+stamp-h1
