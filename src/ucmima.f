@@ -168,12 +168,12 @@ C..............................................................................
           CALL BUTTON(1,'Load',5)
           CALL BIGTEXT(0,1)
           WRITE(*,200)
-          WRITE(*,101) '* Directorio actual de ficheros FITS '//
+          WRITE(*,101) '* List of FITS files in current directory '//
      +     '(*.fts, *.fits):'
           ISYSTEM=SYSTEMFUNCTION('ls *.fts *.fits')
           WRITE(*,200)
-          CALL HELPTEXT('Introducir nombre de fichero con imagen '//
-     +     'en formato FITS (*.fts)')
+          CALL HELPTEXT('Introduce the name of the file to be '//
+     +     'loaded')
 C cuando leemos una imagen, reseteamos la mascara de pixels no validos
           DO I=1,NYMAX
             DO J=1,NXMAX
@@ -182,9 +182,9 @@ C cuando leemos una imagen, reseteamos la mascara de pixels no validos
           END DO
           CALL LEEFITS
           IF(ANYNULL)THEN
-            WRITE(*,101)'*****************************************'
-            WRITE(*,101)'* la imagen contiene pixels indefinidos *'
-            WRITE(*,101)'*****************************************'
+            WRITE(*,101)'***************************************'
+            WRITE(*,101)'* the image contains undefined pixels *'
+            WRITE(*,101)'***************************************'
           END IF
           CALL HELPTEXT(' ')
 C
@@ -245,7 +245,7 @@ C
             CALL BUTTON(80,'Histogram',0)
           END IF
           CALL HELPTEXT('Select option: FILE, ZOOM,'
-     +     //' MEASURE, CALCULATOR or change image cuts.')
+     +     //' MEASURE, CALCULATOR or change image cuts')
           CALL BIGTEXT(1,1)
 C
           CALL BUTTON(1,'Load',0)
@@ -259,12 +259,12 @@ C..............................................................................
           ISYSTEM=SYSTEMFUNCTION('ls *.fts *.fits')
           WRITE(*,200)
           CALL HELPTEXT('Introduce the name of the file where the '//
-     +     'current FITS image will be saved.')
+     +     'current FITS image will be saved')
           CALL ESCFITS
           CALL SHOWFITSFILE('Image: '//FITSFILE(1:TRUELEN(FITSFILE)),
      +     DATAMIN,DATAMAX)
           CALL HELPTEXT('Select option: FILE, ZOOM,'
-     +     //' MEASURE, CALCULATOR or change image cuts.')
+     +     //' MEASURE, CALCULATOR or change image cuts')
           CALL BIGTEXT(1,1)
           CALL BUTTON( 2,'Write', 0)
 C..............................................................................
@@ -272,7 +272,7 @@ C..............................................................................
           CALL BUTTON( 3,'Zoom',  5)
           CALL BIGTEXT(0,2)
           CALL HELPTEXT('Select the two corners of the rectangle '//
-     +     'to be zoomed.')
+     +     'to be zoomed')
 C
           CALL RPGBAND(0,0,0.,0.,XC,YC,CH)
           IXC1=INT(XC+0.5)
@@ -284,7 +284,7 @@ C
           WRITE(CDUMMY,*)IXC1,IYC1
           L1=TRUEBEG(CDUMMY)
           L2=TRUELEN(CDUMMY)
-          CALL HELPTEXT('Cursor location '//CDUMMY(L1:L2)//'.')
+          CALL HELPTEXT('Cursor location '//CDUMMY(L1:L2))
 C
           CALL PGSCI(5)
           CALL RPGBAND(2,0,REAL(IXC1),REAL(IYC1),XC,YC,CH)
@@ -433,7 +433,7 @@ C reactivamos todos los demas botones
           CALL BUTTON(79,CDUMMY(L1:L2),0)
 C
           CALL HELPTEXT('Select option: FILE, ZOOM,'
-     +     //' MEASURE, CALCULATOR or change image cuts.')
+     +     //' MEASURE, CALCULATOR or change image cuts')
           CALL BIGTEXT(1,3)
           CALL BUTTON( 5,'Measure',    0)
 C..............................................................................
@@ -480,13 +480,13 @@ C desactivamos todos los demas botones
           CALL BUTTON(79,CDUMMY(L1:L2),3)
 C pedimos si se va a utilizar una segunda imagen o una constante
           CALL HELPTEXT('Select whether the operation is going '//
-     +     'to use an additional image or a constant.')
+     +     'to use an additional image or a constant')
 C..............................................................................
         ELSEIF((NB.EQ.8).OR.(NB.EQ.16))THEN
           IF(NB.EQ.8)THEN
             CALL BUTTON( 8,'image',   5)
             CALL HELPTEXT('Introduce the name of the additional '//
-     +       'image in the console.')
+     +       'image in the console')
             DO I=1,NAXIS(2)
               DO J=1,NAXIS(1)
                 IMAGENBUFF(J,I)=IMAGEN(J,I)
@@ -683,7 +683,7 @@ C activamos los que estaban desactivados
           CALL BUTTON(80,'Histogram',0)
           COPER=' '         !evita repetir pulsar boton de operacion "apretado"
           CALL HELPTEXT('Select option: FILE, ZOOM,'
-     +     //' MEASURE, CALCULATOR or change image cuts.')
+     +     //' MEASURE, CALCULATOR or change image cuts')
           CALL BIGTEXT(1,4)
 C..............................................................................
         ELSEIF(NB.EQ.9)THEN
@@ -697,7 +697,7 @@ C..............................................................................
      +       'a FITS image, "EXIT" to finish')
           ELSE
             CALL HELPTEXT('Select option: FILE, ZOOM,'
-     +       //' MEASURE, CALCULATOR or change image cuts.')
+     +       //' MEASURE, CALCULATOR or change image cuts')
           END IF
           CALL BIGTEXT(1,1)
           CALL BUTTON(9,'EXIT',0)
@@ -728,7 +728,7 @@ C
 C
           LZOOM=.FALSE.
           CALL HELPTEXT('Select option: FILE, ZOOM,'
-     +     //' MEASURE, CALCULATOR or change image cuts.')
+     +     //' MEASURE, CALCULATOR or change image cuts')
           CALL BIGTEXT(1,2)
           CALL BUTTON(11,'Whole',0)
           CALL BUTTON(11,'Whole',3)
@@ -737,7 +737,7 @@ C..............................................................................
           CALL BUTTON(13,CLADO,  5)
           CALL BIGTEXT(0,3)
           CALL HELPTEXT('This option allows to modify '//
-     +     'the size of the measure square.')
+     +     'the size of the measure square')
           LADO=READILIM('Side of the measure square (odd number)',
      +     CLADO,1,NAXIS(2))
           IF(MOD(LADO,2).EQ.0)THEN
@@ -751,14 +751,14 @@ C..............................................................................
           CALL RMBLANK(CDUMMY,CDUMMY,L1)
           CLADO=CDUMMY(1:L1)
           CALL HELPTEXT('Select option: FILE, ZOOM,'
-     +     //' MEASURE, CALCULATOR or change image cuts.')
+     +     //' MEASURE, CALCULATOR or change image cuts')
           CALL BIGTEXT(1,3)
           CALL BUTTON(13,CLADO,  0)
 C..............................................................................
         ELSEIF(NB.EQ.71)THEN
           WRITE(CDUMMY,*) BG
           CALL HELPTEXT('This option allows to modify the image '//
-     +     'background.')
+     +     'background')
           L1=TRUEBEG(CDUMMY)
           L2=TRUELEN(CDUMMY)
           CALL BUTTON(71,CDUMMY(L1:L2),5)
@@ -774,7 +774,7 @@ C
           L2=TRUELEN(CDUMMY)
           CALL BUTTON(71,CDUMMY(L1:L2),0)
           CALL HELPTEXT('Select option: FILE, ZOOM,'
-     +     //' MEASURE, CALCULATOR or change image cuts.')
+     +     //' MEASURE, CALCULATOR or change image cuts')
 C..............................................................................
         ELSEIF(NB.EQ.72)THEN
           CALL BUTTON(72,'Max,Min',  5)
@@ -807,7 +807,7 @@ C..............................................................................
         ELSEIF(NB.EQ.79)THEN
           WRITE(CDUMMY,*) FG
           CALL HELPTEXT('This option allows to modify the image '//
-     +     'foreground.')
+     +     'foreground')
           L1=TRUEBEG(CDUMMY)
           L2=TRUELEN(CDUMMY)
           CALL BUTTON(79,CDUMMY(L1:L2),5)
@@ -823,12 +823,12 @@ C
           L2=TRUELEN(CDUMMY)
           CALL BUTTON(79,CDUMMY(L1:L2),0)
           CALL HELPTEXT('Select option: FILE, ZOOM,'
-     +     //' MEASURE, CALCULATOR or change image cuts.')
+     +     //' MEASURE, CALCULATOR or change image cuts')
 C..............................................................................
         ELSEIF(NB.EQ.80)THEN
           CALL BUTTON(80,'Histogram',5)
           CALL HELPTEXT('Seleccionar histograma limits with the '//
-     +     'help of the mouse.')
+     +     'help of the mouse')
 C desactivamos todos los demas botones
           CALL BUTTON( 1,'Load',     3)
           CALL BUTTON( 2,'Write', 3)
@@ -880,7 +880,7 @@ C reactivamos todos los demas botones
 C
           CALL BUTTON(80,'Histogram',0)
           CALL HELPTEXT('Select option: FILE, ZOOM,'
-     +     //' MEASURE, CALCULATOR or change image cuts.')
+     +     //' MEASURE, CALCULATOR or change image cuts')
 C..............................................................................
         END IF
         GOTO 20
@@ -1353,7 +1353,7 @@ C definimos la region de dibujo para el histograma
         CALL PGSWIN(XMIN,XMAX,YMIN,YMAX)
 C
         CALL HELPTEXT('Seleccionar histograma limits with the '//
-     +   'help of the mouse.')
+     +   'help of the mouse')
         CALL PGSCI(5)
         CALL RPGBAND(6,0,0.,0.,XC,YC,CH)
         CALL PGSCI(1)
