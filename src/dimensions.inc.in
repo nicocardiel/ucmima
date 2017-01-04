@@ -1,0 +1,4 @@
+        INTEGER NXMAX
+        PARAMETER (NXMAX=@NXMAX@)
+        INTEGER NYMAX
+        PARAMETER (NYMAX=@NYMAX@)
