@@ -80,7 +80,13 @@ C------------------------------------------------------------------------------
 C Abrimos el dispositivo grafico
         CALL RPGBEGOK('/XSERVE',0)
 ccc     CALL RPGBEGOK('/ps',1)
-        CALL PGSCF(2)
+        CALL PGSCF(1)
+        CALL PGSCR(2,1.0,0.5,0.5)
+        CALL PGSCR(3,0.6,1.0,0.6)
+        CALL PGSCR(4,0.4,0.4,1.0)
+        CALL PGSCR(5,0.6,1.0,1.0)
+        CALL PGSCR(7,1.0,1.0,0.4)
+        CALL PALETTE(3)
         CALL BUTTSBR(0.00,1.000,0.05,0.95)
         CALL BUTTSPR(0.04,0.625,0.09,0.75)
         CALL BUTTSXB(8)
@@ -96,8 +102,8 @@ C Dibujamos botones y texto sobre botones:
 C
 C Fichero y Salir
         CALL BUTTON( 1,'Load',     0)
-        CALL BUTTON( 2,'Write', 0)
-        CALL BUTTON( 2,'Write', 3)
+        CALL BUTTON( 2,'Save', 0)
+        CALL BUTTON( 2,'Save', 3)
         CALL BUTTON( 9,'EXIT',    0)
 C Zoom y restaurar
         CALL BUTTON( 3,'Zoom',  0)
@@ -226,14 +232,14 @@ C
 C
           CALL SHOWFITSFILE('Imagen: '//FITSFILE(1:TRUELEN(FITSFILE)),
      +     DATAMIN,DATAMAX)
-          CALL PGGRAY(IMAGEN,NXMAX,NYMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
-          CALL PGGRAYSMALL(NC1,NC2,NS1,NS2,FG,BG,0)
+          CALL PGIMAG(IMAGEN,NXMAX,NYMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
+          CALL PGIMAGSMALL(NC1,NC2,NS1,NS2,FG,BG,0)
           CALL ESTADISTICA(NC1,NC2,NS1,NS2,BG,FG)
           CALL HISTOGRAMA(NC1,NC2,NS1,NS2,BG,FG)
 C
           IF(LFIRSTIMAGE)THEN          !la proxima ya no sera la primera imagen
             LFIRSTIMAGE=.FALSE.
-            CALL BUTTON( 2,'Write', 0)
+            CALL BUTTON( 2,'Save', 0)
             CALL BUTTON( 3,'Zoom',  0)
             CALL BUTTON( 5,'Measure',    0)
             CALL BUTTON(13,CLADO,      0)
@@ -251,7 +257,7 @@ C
           CALL BUTTON(1,'Load',0)
 C..............................................................................
         ELSEIF(NB.EQ.2)THEN
-          CALL BUTTON( 2,'Write', 5)
+          CALL BUTTON( 2,'Save', 5)
           CALL BIGTEXT(0,1)
           WRITE(*,200)
           WRITE(*,101) '* List of FITS files in current directory '//
@@ -266,7 +272,7 @@ C..............................................................................
           CALL HELPTEXT('Select option: FILE, ZOOM,'
      +     //' MEASURE, CALCULATOR or change image cuts')
           CALL BIGTEXT(1,1)
-          CALL BUTTON( 2,'Write', 0)
+          CALL BUTTON( 2,'Save', 0)
 C..............................................................................
         ELSEIF(NB.EQ.3)THEN
           CALL BUTTON( 3,'Zoom',  5)
@@ -318,8 +324,8 @@ C
           CALL PGBOX('BCTSNI',0.0,0,'BCTSNI',0.0,0)
           CALL SHOWFITSFILE('Image: '//FITSFILE(1:TRUELEN(FITSFILE)),
      +     DATAMIN,DATAMAX)
-          CALL PGGRAY(IMAGEN,NXMAX,NYMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
-          CALL PGGRAYSMALL(NC1,NC2,NS1,NS2,FG,BG,0)
+          CALL PGIMAG(IMAGEN,NXMAX,NYMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
+          CALL PGIMAGSMALL(NC1,NC2,NS1,NS2,FG,BG,0)
           CALL HISTOGRAMA(NC1,NC2,NS1,NS2,BG,FG)
 C
           WRITE(CNC1,'(I5)') NC1
@@ -348,7 +354,7 @@ C..............................................................................
           LMEDIR=.FALSE.                   !de momento aun no hemos medido nada
 C desactivamos todos los demas botones
           CALL BUTTON( 1,'Load',     3)
-          CALL BUTTON( 2,'Write', 3)
+          CALL BUTTON( 2,'Save', 3)
           CALL BUTTON( 9,'EXIT',    3)
           CALL BUTTON( 3,'Zoom',  3)
           CALL BUTTON(11,'Whole',3)
@@ -402,17 +408,17 @@ C medimos
               CALL PGDRAW(REAL(MNC1),REAL(MNS1))
               CALL PGSCI(1)
               CALL ESTADISTICA(MNC1,MNC2,MNS1,MNS2,BG,FG)
-              CALL PGGRAYSMALL(MNC1,MNC2,MNS1,MNS2,FG,BG,1)
+              CALL PGIMAGSMALL(MNC1,MNC2,MNS1,MNS2,FG,BG,1)
             ELSE
             END IF
           END IF
           GOTO 50
 52        IF(LMEDIR)THEN     !recuperamos la imagen completa con region de zoom
-            CALL PGGRAYSMALL(NC1,NC2,NS1,NS2,FG,BG,0)
+            CALL PGIMAGSMALL(NC1,NC2,NS1,NS2,FG,BG,0)
           END IF
 C reactivamos todos los demas botones
           CALL BUTTON( 1,'Load',     0)
-          CALL BUTTON( 2,'Write', 0)
+          CALL BUTTON( 2,'Save', 0)
           CALL BUTTON( 9,'EXIT',    0)
           CALL BUTTON( 3,'Zoom',  0)
           IF((LZOOM).OR.(LMEDIR)) CALL BUTTON(11,'Whole',0)
@@ -458,7 +464,7 @@ C se activan solo estos dos
           CALL BUTTON(16,'constant',0)
 C desactivamos todos los demas botones
           CALL BUTTON( 1,'Load',     3)
-          CALL BUTTON( 2,'Write', 3)
+          CALL BUTTON( 2,'Save', 3)
           CALL BUTTON( 9,'EXIT',    3)
           CALL BUTTON( 3,'Zoom',  3)
           CALL BUTTON( 5,'Measure',    3)
@@ -658,8 +664,8 @@ C redibujamos el resultado
           CALL PGBOX('BCTSNI',0.0,0,'BCTSNI',0.0,0)
           CALL SHOWFITSFILE('Image: '//FITSFILE(1:TRUELEN(FITSFILE)),
      +     DATAMIN,DATAMAX)
-          CALL PGGRAY(IMAGEN,NXMAX,NYMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
-          CALL PGGRAYSMALL(NC1,NC2,NS1,NS2,FG,BG,0)
+          CALL PGIMAG(IMAGEN,NXMAX,NYMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
+          CALL PGIMAGSMALL(NC1,NC2,NS1,NS2,FG,BG,0)
           CALL ESTADISTICA(NC1,NC2,NS1,NS2,BG,FG)
           CALL HISTOGRAMA(NC1,NC2,NS1,NS2,BG,FG)
 C desactivamos estos dos seguro
@@ -669,7 +675,7 @@ C desactivamos estos dos seguro
           CALL BUTTON(16,'constant',3)
 C activamos los que estaban desactivados
           CALL BUTTON( 1,'Load',     0)
-          CALL BUTTON( 2,'Write', 0)
+          CALL BUTTON( 2,'Save', 0)
           CALL BUTTON( 9,'EXIT',    0)
           CALL BUTTON( 3,'Zoom',  0)
           CALL BUTTON( 5,'Measure',    0)
@@ -722,8 +728,8 @@ C
           CALL PGBOX('BCTSNI',0.0,0,'BCTSNI',0.0,0)
           CALL SHOWFITSFILE('Image: '//FITSFILE(1:TRUELEN(FITSFILE)),
      +     DATAMIN,DATAMAX)
-          CALL PGGRAY(IMAGEN,NXMAX,NYMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
-          CALL PGGRAYSMALL(NC1,NC2,NS1,NS2,FG,BG,0)
+          CALL PGIMAG(IMAGEN,NXMAX,NYMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
+          CALL PGIMAGSMALL(NC1,NC2,NS1,NS2,FG,BG,0)
           CALL HISTOGRAMA(NC1,NC2,NS1,NS2,BG,FG)
 C
           LZOOM=.FALSE.
@@ -764,8 +770,8 @@ C..............................................................................
           CALL BUTTON(71,CDUMMY(L1:L2),5)
           BG=READF('Background',CDUMMY(L1:L2))
 C
-          CALL PGGRAY(IMAGEN,NXMAX,NYMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
-          CALL PGGRAYSMALL(NC1,NC2,NS1,NS2,FG,BG,0)
+          CALL PGIMAG(IMAGEN,NXMAX,NYMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
+          CALL PGIMAGSMALL(NC1,NC2,NS1,NS2,FG,BG,0)
           CALL ESTADISTICA(NC1,NC2,NS1,NS2,BG,FG)
           CALL HISTOGRAMA(NC1,NC2,NS1,NS2,BG,FG)
 C
@@ -788,8 +794,8 @@ C
             END DO
           END DO
 C
-          CALL PGGRAY(IMAGEN,NXMAX,NYMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
-          CALL PGGRAYSMALL(NC1,NC2,NS1,NS2,FG,BG,0)
+          CALL PGIMAG(IMAGEN,NXMAX,NYMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
+          CALL PGIMAGSMALL(NC1,NC2,NS1,NS2,FG,BG,0)
           CALL ESTADISTICA(NC1,NC2,NS1,NS2,BG,FG)
           CALL HISTOGRAMA(NC1,NC2,NS1,NS2,BG,FG)
 C
@@ -813,8 +819,8 @@ C..............................................................................
           CALL BUTTON(79,CDUMMY(L1:L2),5)
           FG=READF('Foreground',CDUMMY(L1:L2))
 C
-          CALL PGGRAY(IMAGEN,NXMAX,NYMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
-          CALL PGGRAYSMALL(NC1,NC2,NS1,NS2,FG,BG,0)
+          CALL PGIMAG(IMAGEN,NXMAX,NYMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
+          CALL PGIMAGSMALL(NC1,NC2,NS1,NS2,FG,BG,0)
           CALL ESTADISTICA(NC1,NC2,NS1,NS2,BG,FG)
           CALL HISTOGRAMA(NC1,NC2,NS1,NS2,BG,FG)
 C
@@ -831,7 +837,7 @@ C..............................................................................
      +     'help of the mouse')
 C desactivamos todos los demas botones
           CALL BUTTON( 1,'Load',     3)
-          CALL BUTTON( 2,'Write', 3)
+          CALL BUTTON( 2,'Save', 3)
           CALL BUTTON( 9,'EXIT',    3)
           CALL BUTTON( 3,'Zoom',  3)
           CALL BUTTON(11,'Whole',3)
@@ -852,13 +858,13 @@ C desactivamos todos los demas botones
           CALL BUTTON(79,CDUMMY(L1:L2),3)
 C seleccionamos region del histograma
           CALL ZOOMHISTOG(BG,FG)
-          CALL PGGRAY(IMAGEN,NXMAX,NYMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
-          CALL PGGRAYSMALL(NC1,NC2,NS1,NS2,FG,BG,0)
+          CALL PGIMAG(IMAGEN,NXMAX,NYMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
+          CALL PGIMAGSMALL(NC1,NC2,NS1,NS2,FG,BG,0)
           CALL ESTADISTICA(NC1,NC2,NS1,NS2,BG,FG)
           CALL HISTOGRAMA(NC1,NC2,NS1,NS2,BG,FG)
 C reactivamos todos los demas botones
           CALL BUTTON( 1,'Load',     0)
-          CALL BUTTON( 2,'Write', 0)
+          CALL BUTTON( 2,'Save', 0)
           CALL BUTTON( 9,'EXIT',    0)
           CALL BUTTON( 3,'Zoom',  0)
           IF(LZOOM) CALL BUTTON(11,'Whole',0)
@@ -1089,7 +1095,7 @@ C
         END IF
 C
         CALL PGSCI(5)
-        CALL PGPTEXT(0.67,0.75,0.0,0.0,'Media:')
+        CALL PGPTEXT(0.67,0.75,0.0,0.0,'Mean')
         WRITE(CDUMMY,*) FMEAN
         L1=TRUEBEG(CDUMMY)
         L2=TRUELEN(CDUMMY)
@@ -1102,7 +1108,7 @@ C
         CALL PGPTEXT(0.99,0.75,0.0,1.0,CDUMMYBIS(L1BIS:L2BIS))
 C
         CALL PGSCI(5)
-        CALL PGPTEXT(0.67,0.72,0.0,0.0,'Desv.t\\(2189)p.:')
+        CALL PGPTEXT(0.67,0.72,0.0,0.0,'Std.Dev.:')
         WRITE(CDUMMY,*) FSIGMA
         L1=TRUEBEG(CDUMMY)
         L2=TRUELEN(CDUMMY)
@@ -1115,7 +1121,7 @@ C
         CALL PGPTEXT(0.99,0.72,0.0,1.0,CDUMMYBIS(L1BIS:L2BIS))
 C
         CALL PGSCI(5)
-        CALL PGPTEXT(0.67,0.69,0.0,0.0,'Mediana:')
+        CALL PGPTEXT(0.67,0.69,0.0,0.0,'Median:')
         WRITE(CDUMMY,*) FMEDIAN
         L1=TRUEBEG(CDUMMY)
         L2=TRUELEN(CDUMMY)
@@ -1158,7 +1164,7 @@ C
         END IF
         WRITE(*,101) CDUMMY(L1:L2)
 C
-        WRITE(*,100) 'Std.Devi.: '
+        WRITE(*,100) 'Std.Dev.:  '
         WRITE(*,100) '   '
         WRITE(CDUMMY,*) FSIGMA
         L1=TRUEBEG(CDUMMY)
@@ -1388,7 +1394,7 @@ C ITYPE=0: dibuja imagen completa en peque\~{n}o, con region de zoom marcada en
 C otro color. 
 C ITYPE=1: dibuja region en la que se esta midiendo, marcandose en otro color
 C los pixels que no se utilizan en la estadistica.
-        SUBROUTINE PGGRAYSMALL(NC1,NC2,NS1,NS2,FG,BG,ITYPE)
+        SUBROUTINE PGIMAGSMALL(NC1,NC2,NS1,NS2,FG,BG,ITYPE)
         IMPLICIT NONE
         INTEGER NC1,NC2,NS1,NS2
         REAL BG,FG
@@ -1438,10 +1444,10 @@ C definimos nueva region de dibujo
         CALL RPGERASW(0.74,1.00,0.47,0.66,0)
         IF(ITYPE.EQ.0)THEN
           CALL PGWNAD(XMIN,XMAX,YMIN,YMAX)
-          CALL PGGRAY(IMAGEN,NXMAX,NYMAX,1,NAXIS(1),1,NAXIS(2),FG,BG,TR)
+          CALL PGIMAG(IMAGEN,NXMAX,NYMAX,1,NAXIS(1),1,NAXIS(2),FG,BG,TR)
         ELSE
           CALL PGWNAD(XMIN,XMAX,YMIN,YMAX)
-          CALL PGGRAY(IMAGEN,NXMAX,NYMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
+          CALL PGIMAG(IMAGEN,NXMAX,NYMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
           DO I=NS1,NS2
             DO J=NC1,NC2
               IF(IMAGEN(J,I).GT.FG)THEN

@@ -26,6 +26,7 @@ fmedian1.f \
 ifbutton.f \
 iofunctions.f \
 ordena1f.f \
+palette.f \
 rpgband.f \
 rpgbegin.f \
 rpgbegok.f \
