@@ -19,5 +19,9 @@ Documentation outline
 .. toctree::
    :maxdepth: 2
 
+   license_agreement
+   installation
+   using_the_program
+
 
 
