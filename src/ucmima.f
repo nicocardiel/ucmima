@@ -37,6 +37,7 @@ C
         INTEGER L1,L2,IXC1,IXC2,IYC1,IYC2
         INTEGER LNC1,LNC2,LNS1,LNS2
         INTEGER LADO                         !tama\~{n}o del cuadrado de medida
+        INTEGER ILUT
         REAL DATAMIN,DATAMAX
         REAL DATAMINBUFF,DATAMAXBUFF
         REAL IMAGEN(NXMAX,NYMAX)
@@ -45,7 +46,7 @@ C
         REAL XMIN,XMAX,YMIN,YMAX
         REAL BG,FG,TR(6)
         REAL FMEAN,FSIGMA,FMEDIAN
-        CHARACTER*1 CH,COUT,COPER
+        CHARACTER*1 CH,COUT,COPER,CLUT
         CHARACTER*5 CNC1,CNC2,CNS1,CNS2,CLADO
         CHARACTER*80 FITSFILE,FITSFILEBUFF,CDUMMY
         LOGICAL LFIRSTIMAGE
@@ -73,6 +74,8 @@ C
         LFIRSTIMAGE=.TRUE.           !la proxima imagen es la primera en leerse
         LZOOM=.FALSE.                    !indica si la imagen actual es un zoom
 C
+        ILUT=3
+        CLUT='3'
         LADO=21
         CLADO='21'
         COPER=' '
@@ -86,7 +89,7 @@ ccc     CALL RPGBEGOK('/ps',1)
         CALL PGSCR(4,0.4,0.4,1.0)
         CALL PGSCR(5,0.6,1.0,1.0)
         CALL PGSCR(7,1.0,1.0,0.4)
-        CALL PALETTE(3)
+        CALL PALETTE(ILUT)
         CALL BUTTSBR(0.00,1.000,0.05,0.95)
         CALL BUTTSPR(0.04,0.625,0.09,0.75)
         CALL BUTTSXB(8)
@@ -99,6 +102,7 @@ C Dibujamos botones y texto sobre botones:
         CALL BIGTEXT(1,2)
         CALL BIGTEXT(1,3)
         CALL BIGTEXT(1,4)
+        CALL BIGTEXT(1,5)
 C
 C Fichero y Salir
         CALL BUTTON( 1,'Load',     0)
@@ -110,6 +114,9 @@ C Zoom y restaurar
         CALL BUTTON( 3,'Zoom',  3)
         CALL BUTTON(11,'Whole',0)
         CALL BUTTON(11,'Whole',3)
+C LUT
+        CALL BUTTON( 4,'LUT '//CLUT, 0)
+        CALL BUTTON( 4,'LUT '//CLUT, 3)
 C Medir
         CALL BUTTON( 5,'Measure', 0)
         CALL BUTTON( 5,'Measure', 3)
@@ -241,6 +248,7 @@ C
             LFIRSTIMAGE=.FALSE.
             CALL BUTTON( 2,'Save', 0)
             CALL BUTTON( 3,'Zoom',  0)
+            CALL BUTTON( 4,'LUT '//CLUT, 0)
             CALL BUTTON( 5,'Measure',    0)
             CALL BUTTON(13,CLADO,      0)
             CALL BUTTON( 6,'+',        0)
@@ -250,7 +258,7 @@ C
             CALL BUTTON(72,'Max,Min',  0)
             CALL BUTTON(80,'Histogram',0)
           END IF
-          CALL HELPTEXT('Select option: FILE, ZOOM,'
+          CALL HELPTEXT('Select option: FILE, ZOOM, LUT,'
      +     //' MEASURE, CALCULATOR or change image cuts')
           CALL BIGTEXT(1,1)
 C
@@ -269,7 +277,7 @@ C..............................................................................
           CALL ESCFITS
           CALL SHOWFITSFILE('Image: '//FITSFILE(1:TRUELEN(FITSFILE)),
      +     DATAMIN,DATAMAX)
-          CALL HELPTEXT('Select option: FILE, ZOOM,'
+          CALL HELPTEXT('Select option: FILE, ZOOM, LUT,'
      +     //' MEASURE, CALCULATOR or change image cuts')
           CALL BIGTEXT(1,1)
           CALL BUTTON( 2,'Save', 0)
@@ -346,17 +354,38 @@ C
           LZOOM=.TRUE.
           CALL BUTTON(11,'Whole',0)
           CALL BIGTEXT(1,2)
-          CALL BUTTON( 3,'Whole',  0)
+          CALL BUTTON( 3,'Zoom',  0)
+C..............................................................................
+        ELSEIF(NB.EQ.4)THEN
+          CALL BUTTON( 4,'LUT '//CLUT,    5)
+          CALL BIGTEXT(0,3)
+          ILUT = ILUT + 1
+          IF(ILUT.GT.5) ILUT = 1
+          WRITE(CLUT,'(I1)') ILUT
+          CALL PALETTE(ILUT)
+C
+          CALL RPGERASW(0.00,0.64,0.045,0.80,0)
+          CALL RPGENV(XMIN,XMAX,YMIN,YMAX,1,-2)
+          CALL PGBOX('BCTSNI',0.0,0,'BCTSNI',0.0,0)
+          CALL SHOWFITSFILE('Image: '//FITSFILE(1:TRUELEN(FITSFILE)),
+     +     DATAMIN,DATAMAX)
+          CALL PGIMAG(IMAGEN,NXMAX,NYMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
+          CALL PGIMAGSMALL(NC1,NC2,NS1,NS2,FG,BG,0)
+          CALL HISTOGRAMA(NC1,NC2,NS1,NS2,BG,FG)
+C
+          CALL BIGTEXT(1,3)
+          CALL BUTTON( 4,'LUT '//CLUT,    0)
 C..............................................................................
         ELSEIF(NB.EQ.5)THEN
           CALL BUTTON( 5,'Measure',    5)
-          CALL BIGTEXT(0,3)
+          CALL BIGTEXT(0,4)
           LMEDIR=.FALSE.                   !de momento aun no hemos medido nada
 C desactivamos todos los demas botones
           CALL BUTTON( 1,'Load',     3)
           CALL BUTTON( 2,'Save', 3)
           CALL BUTTON( 9,'EXIT',    3)
           CALL BUTTON( 3,'Zoom',  3)
+          CALL BUTTON( 4,'LUT '//CLUT,  3)
           CALL BUTTON(11,'Whole',3)
           CALL BUTTON(13,CLADO      ,3)
           CALL BUTTON( 6,'+',        3)
@@ -421,6 +450,7 @@ C reactivamos todos los demas botones
           CALL BUTTON( 2,'Save', 0)
           CALL BUTTON( 9,'EXIT',    0)
           CALL BUTTON( 3,'Zoom',  0)
+          CALL BUTTON( 4,'LUT '//CLUT,  0)
           IF((LZOOM).OR.(LMEDIR)) CALL BUTTON(11,'Whole',0)
           CALL BUTTON(13,CLADO      ,0)
           CALL BUTTON( 6,'+',        0)
@@ -438,14 +468,14 @@ C reactivamos todos los demas botones
           L2=TRUELEN(CDUMMY)
           CALL BUTTON(79,CDUMMY(L1:L2),0)
 C
-          CALL HELPTEXT('Select option: FILE, ZOOM,'
+          CALL HELPTEXT('Select option: FILE, ZOOM, LUT,'
      +     //' MEASURE, CALCULATOR or change image cuts')
-          CALL BIGTEXT(1,3)
+          CALL BIGTEXT(1,4)
           CALL BUTTON( 5,'Measure',    0)
 C..............................................................................
         ELSEIF((NB.EQ.6).OR.(NB.EQ.7).OR.(NB.EQ.14).OR.(NB.EQ.15))THEN
           IF(COPER.NE.' ') GOTO 20
-          CALL BIGTEXT(0,4)
+          CALL BIGTEXT(0,5)
           IF(NB.EQ. 6)THEN
             CALL BUTTON( 6,'+',        5)
             COPER='+'
@@ -467,6 +497,7 @@ C desactivamos todos los demas botones
           CALL BUTTON( 2,'Save', 3)
           CALL BUTTON( 9,'EXIT',    3)
           CALL BUTTON( 3,'Zoom',  3)
+          CALL BUTTON( 4,'LUT '//CLUT,  3)
           CALL BUTTON( 5,'Measure',    3)
           CALL BUTTON(11,'Whole',3)
           CALL BUTTON(13,CLADO      ,3)
@@ -678,6 +709,7 @@ C activamos los que estaban desactivados
           CALL BUTTON( 2,'Save', 0)
           CALL BUTTON( 9,'EXIT',    0)
           CALL BUTTON( 3,'Zoom',  0)
+          CALL BUTTON( 4,'LUT '//CLUT,  0)
           CALL BUTTON( 5,'Measure',    0)
           IF(LZOOM) CALL BUTTON(11,'Whole',0)
           CALL BUTTON(13,CLADO      ,0)
@@ -688,9 +720,9 @@ C activamos los que estaban desactivados
           CALL BUTTON(72,'Max,Min',  0)
           CALL BUTTON(80,'Histogram',0)
           COPER=' '         !evita repetir pulsar boton de operacion "apretado"
-          CALL HELPTEXT('Select option: FILE, ZOOM,'
+          CALL HELPTEXT('Select option: FILE, ZOOM, LUT,'
      +     //' MEASURE, CALCULATOR or change image cuts')
-          CALL BIGTEXT(1,4)
+          CALL BIGTEXT(1,5)
 C..............................................................................
         ELSEIF(NB.EQ.9)THEN
           CALL BUTTON(9,'EXIT',5)
@@ -702,7 +734,7 @@ C..............................................................................
             CALL HELPTEXT('Select "Load" to introduce '//
      +       'a FITS image, "EXIT" to finish')
           ELSE
-            CALL HELPTEXT('Select option: FILE, ZOOM,'
+            CALL HELPTEXT('Select option: FILE, ZOOM, LUT,'
      +       //' MEASURE, CALCULATOR or change image cuts')
           END IF
           CALL BIGTEXT(1,1)
@@ -733,7 +765,7 @@ C
           CALL HISTOGRAMA(NC1,NC2,NS1,NS2,BG,FG)
 C
           LZOOM=.FALSE.
-          CALL HELPTEXT('Select option: FILE, ZOOM,'
+          CALL HELPTEXT('Select option: FILE, ZOOM, LUT,'
      +     //' MEASURE, CALCULATOR or change image cuts')
           CALL BIGTEXT(1,2)
           CALL BUTTON(11,'Whole',0)
@@ -756,7 +788,7 @@ C..............................................................................
           WRITE(CDUMMY,*)LADO
           CALL RMBLANK(CDUMMY,CDUMMY,L1)
           CLADO=CDUMMY(1:L1)
-          CALL HELPTEXT('Select option: FILE, ZOOM,'
+          CALL HELPTEXT('Select option: FILE, ZOOM, LUT,'
      +     //' MEASURE, CALCULATOR or change image cuts')
           CALL BIGTEXT(1,3)
           CALL BUTTON(13,CLADO,  0)
@@ -779,7 +811,7 @@ C
           L1=TRUEBEG(CDUMMY)
           L2=TRUELEN(CDUMMY)
           CALL BUTTON(71,CDUMMY(L1:L2),0)
-          CALL HELPTEXT('Select option: FILE, ZOOM,'
+          CALL HELPTEXT('Select option: FILE, ZOOM, LUT,'
      +     //' MEASURE, CALCULATOR or change image cuts')
 C..............................................................................
         ELSEIF(NB.EQ.72)THEN
@@ -828,7 +860,7 @@ C
           L1=TRUEBEG(CDUMMY)
           L2=TRUELEN(CDUMMY)
           CALL BUTTON(79,CDUMMY(L1:L2),0)
-          CALL HELPTEXT('Select option: FILE, ZOOM,'
+          CALL HELPTEXT('Select option: FILE, ZOOM, LUT,'
      +     //' MEASURE, CALCULATOR or change image cuts')
 C..............................................................................
         ELSEIF(NB.EQ.80)THEN
@@ -840,6 +872,7 @@ C desactivamos todos los demas botones
           CALL BUTTON( 2,'Save', 3)
           CALL BUTTON( 9,'EXIT',    3)
           CALL BUTTON( 3,'Zoom',  3)
+          CALL BUTTON( 4,'LUT '//CLUT,  3)
           CALL BUTTON(11,'Whole',3)
           CALL BUTTON( 5,'Measure',    3)
           CALL BUTTON(13,CLADO      ,3)
@@ -867,6 +900,7 @@ C reactivamos todos los demas botones
           CALL BUTTON( 2,'Save', 0)
           CALL BUTTON( 9,'EXIT',    0)
           CALL BUTTON( 3,'Zoom',  0)
+          CALL BUTTON( 4,'LUT '//CLUT,  0)
           IF(LZOOM) CALL BUTTON(11,'Whole',0)
           CALL BUTTON( 5,'Measure',    0)
           CALL BUTTON(13,CLADO      ,0)
@@ -885,7 +919,7 @@ C reactivamos todos los demas botones
           CALL BUTTON(79,CDUMMY(L1:L2),0)
 C
           CALL BUTTON(80,'Histogram',0)
-          CALL HELPTEXT('Select option: FILE, ZOOM,'
+          CALL HELPTEXT('Select option: FILE, ZOOM, LUT,'
      +     //' MEASURE, CALCULATOR or change image cuts')
 C..............................................................................
         END IF
@@ -1250,12 +1284,13 @@ C
         COMMON/BLKHLIMITS/XMIN,XMAX,YMIN,YMAX
         COMMON/BLKESTADISTICA/FMEAN,FSIGMA,FMEDIAN
 C------------------------------------------------------------------------------
-        IF(INT(ABS(FG-BG)).LT.NBINMAX)THEN
-          NBIN=INT(ABS(FG-BG))
-          IF(NBIN.EQ.0) NBIN=1
-        ELSE
-          NBIN=NBINMAX
-        END IF
+!       IF(INT(ABS(FG-BG)).LT.NBINMAX)THEN
+!         NBIN=INT(ABS(FG-BG))
+!         IF(NBIN.EQ.0) NBIN=1
+!       ELSE
+!         NBIN=NBINMAX
+!       END IF
+        NBIN=NBINMAX
 C calculamos el histograma
         DO K=1,NBIN
           NPIX(K)=0
@@ -1338,13 +1373,12 @@ C Hace un zoom en el histograma
 C
         INTEGER         TRUEBEG,TRUELEN     !character manipulation
 C
-        INTEGER IXC1
-        INTEGER IXC2
         INTEGER L1,L2,NN1,NN2
         REAL XV1,XV2,YV1,YV2
         REAL XW1,XW2,YW1,YW2
         REAL XMIN,XMAX,YMIN,YMAX
         REAL XC,YC
+        REAL XC1,XC2
         CHARACTER*1 CH
         CHARACTER*50 CDUMMY
 C
@@ -1362,25 +1396,23 @@ C
      +   'help of the mouse')
         CALL PGSCI(5)
         CALL RPGBAND(6,0,0.,0.,XC,YC,CH)
+        XC1=XC
         CALL PGSCI(1)
-        IXC1=INT(XC+0.5)
-        IF(IXC1.LT.NINT(XMIN)) IXC1=NINT(XMIN)
-        IF(IXC1.GT.NINT(XMAX)) IXC1=NINT(XMAX)
-        WRITE(CDUMMY,*) IXC1
+        IF(XC1.LT.XMIN) XC1=XMIN
+        IF(XC1.GT.XMAX) XC1=XMAX
+        WRITE(CDUMMY,*) XC1
         L1=TRUEBEG(CDUMMY)
         L2=TRUELEN(CDUMMY)
         CALL HELPTEXT('Cursor X='//CDUMMY(L1:L2)//
      +   '. Press the mouse again...')
         CALL PGSCI(5)
-        CALL RPGBAND(4,0,REAL(IXC1),0.,XC,YC,CH)
+        CALL RPGBAND(4,0,XC,0.,XC,YC,CH)
+        XC2=XC
         CALL PGSCI(1)
-        IXC2=INT(XC+0.5)
-        IF(IXC2.LT.NINT(XMIN)) IXC2=NINT(XMIN)
-        IF(IXC2.GT.NINT(XMAX)) IXC2=NINT(XMAX)
-        NN1=MIN0(IXC1,IXC2)
-        NN2=MAX0(IXC1,IXC2)
-        BG=REAL(NN1)
-        FG=REAL(NN2)
+        IF(XC2.LT.XMIN) XC2=XMIN
+        IF(XC2.GT.XMAX) XC2=XMAX
+        BG=AMIN1(XC1,XC2)
+        FG=AMAX1(XC2,XC2)
         CALL HELPTEXT(' ')
 C------------------------------------------------------------------------------
 C recuperamos region de dibujo inicial
@@ -1529,8 +1561,10 @@ C
         ELSEIF(ILABEL.EQ.2)THEN
           CALL PGPTEXT(0.3125,0.96,0.0,0.5,'ZOOM')
         ELSEIF(ILABEL.EQ.3)THEN
-          CALL PGPTEXT(0.5625,0.96,0.0,0.5,'MEASURE')
+          CALL PGPTEXT(0.4375,0.96,0.0,0.5,'LUT')
         ELSEIF(ILABEL.EQ.4)THEN
+          CALL PGPTEXT(0.5625,0.96,0.0,0.5,'MEASURE')
+        ELSEIF(ILABEL.EQ.5)THEN
           CALL PGPTEXT(0.8125,0.96,0.0,0.5,'CALCULATOR')
         END IF
 C------------------------------------------------------------------------------
