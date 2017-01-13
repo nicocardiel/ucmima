@@ -182,6 +182,7 @@ C------------------------------------------------------------------------------
 	  ELSE
 	    CALL PGSCI(0)
 	  END IF
+          CALL PGSCH(PGSCH_BUTT)
 	  CALL PGPTEXT((X1+X2)/2.,Y1+OFFY,0.,0.5,TEXT)
 	  CALL PGSCI(0)
 	  CALL PGMOVE(X1,Y1)

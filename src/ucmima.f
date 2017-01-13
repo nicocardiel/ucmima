@@ -137,11 +137,13 @@ C Calculadora
         CALL BUTTON(16,'constant',3)
 C Background, Foreground, MINMAX
         CALL BUTTON(70,'       BG:',-6)
+        CALL BUTTON(78,'       FG:',-6)
+        CALL BUTTSCH(0.8)
         CALL BUTTON(71,'Background',0)
         CALL BUTTON(71,'Background',3)
-        CALL BUTTON(78,'       FG:',-6)
         CALL BUTTON(79,'Foreground',0)
         CALL BUTTON(79,'Foreground',3)
+        CALL BUTTSCH(1.0)
         CALL BUTTON(72,'Max,Min',  0)
         CALL BUTTON(72,'Max,Min',  3)
         CALL BUTTON(80,'Histogram',0)
@@ -220,6 +222,7 @@ C
               BG=BG-1.
               FG=FG+1.
             END IF
+            CALL BUTTSCH(0.8)
             WRITE(CDUMMY,*) BG
             L1=TRUEBEG(CDUMMY)
             L2=TRUELEN(CDUMMY)
@@ -228,6 +231,7 @@ C
             L1=TRUEBEG(CDUMMY)
             L2=TRUELEN(CDUMMY)
             CALL BUTTON(79,CDUMMY(L1:L2),0)
+            CALL BUTTSCH(1.0)
             XMIN=REAL(NC1)-0.5
             XMAX=REAL(NC2)+0.5
             YMIN=REAL(NS1)-0.5
@@ -250,6 +254,7 @@ C
             CALL BUTTON( 3,'Zoom',  0)
             CALL BUTTON( 4,'LUT '//CLUT, 0)
             CALL BUTTON( 5,'Measure',    0)
+            CALL BUTTON(11,'Whole',    0)
             CALL BUTTON(13,CLADO,      0)
             CALL BUTTON( 6,'+',        0)
             CALL BUTTON( 7,'-',        0)
@@ -394,6 +399,7 @@ C desactivamos todos los demas botones
           CALL BUTTON(15,'x',        3)
           CALL BUTTON(72,'Max,Min',  3)
           CALL BUTTON(80,'Histogram',3)
+          CALL BUTTSCH(0.8)
           WRITE(CDUMMY,*) BG
           L1=TRUEBEG(CDUMMY)
           L2=TRUELEN(CDUMMY)
@@ -402,6 +408,7 @@ C desactivamos todos los demas botones
           L1=TRUEBEG(CDUMMY)
           L2=TRUELEN(CDUMMY)
           CALL BUTTON(79,CDUMMY(L1:L2),3)
+          CALL BUTTSCH(1.0)
 C medimos
           CALL HELPTEXT('MOUSE: measure with left button,'//
      +     ' finish with right buttton')
@@ -459,6 +466,7 @@ C reactivamos todos los demas botones
           CALL BUTTON(15,'x',        0)
           CALL BUTTON(72,'Max,Min',  0)
           CALL BUTTON(80,'Histogram',0)
+          CALL BUTTSCH(0.8)
           WRITE(CDUMMY,*) BG
           L1=TRUEBEG(CDUMMY)
           L2=TRUELEN(CDUMMY)
@@ -467,6 +475,7 @@ C reactivamos todos los demas botones
           L1=TRUEBEG(CDUMMY)
           L2=TRUELEN(CDUMMY)
           CALL BUTTON(79,CDUMMY(L1:L2),0)
+          CALL BUTTSCH(1.0)
 C
           CALL HELPTEXT('Select option: FILE, ZOOM, LUT,'
      +     //' MEASURE, CALCULATOR or change image cuts')
@@ -507,6 +516,7 @@ C desactivamos todos los demas botones
           IF(COPER.NE.'x') CALL BUTTON(15,'x',        3)
           CALL BUTTON(72,'Max,Min',  3)
           CALL BUTTON(80,'Histogram',3)
+          CALL BUTTSCH(0.8)
           WRITE(CDUMMY,*) BG
           L1=TRUEBEG(CDUMMY)
           L2=TRUELEN(CDUMMY)
@@ -515,6 +525,7 @@ C desactivamos todos los demas botones
           L1=TRUEBEG(CDUMMY)
           L2=TRUELEN(CDUMMY)
           CALL BUTTON(79,CDUMMY(L1:L2),3)
+          CALL BUTTSCH(1.0)
 C pedimos si se va a utilizar una segunda imagen o una constante
           CALL HELPTEXT('Select whether the operation is going '//
      +     'to use an additional image or a constant')
@@ -678,6 +689,7 @@ C redibujamos el resultado
             BG=BG-1.
             FG=FG+1.
           END IF
+          CALL BUTTSCH(0.8)
           WRITE(CDUMMY,*) BG
           L1=TRUEBEG(CDUMMY)
           L2=TRUELEN(CDUMMY)
@@ -686,6 +698,7 @@ C redibujamos el resultado
           L1=TRUEBEG(CDUMMY)
           L2=TRUELEN(CDUMMY)
           CALL BUTTON(79,CDUMMY(L1:L2),0)
+          CALL BUTTSCH(1.0)
           XMIN=REAL(NC1)-0.5
           XMAX=REAL(NC2)+0.5
           YMIN=REAL(NS1)-0.5
@@ -769,7 +782,7 @@ C
      +     //' MEASURE, CALCULATOR or change image cuts')
           CALL BIGTEXT(1,2)
           CALL BUTTON(11,'Whole',0)
-          CALL BUTTON(11,'Whole',3)
+!         CALL BUTTON(11,'Whole',3)
 C..............................................................................
         ELSEIF(NB.EQ.13)THEN
           CALL BUTTON(13,CLADO,  5)
@@ -799,7 +812,9 @@ C..............................................................................
      +     'background')
           L1=TRUEBEG(CDUMMY)
           L2=TRUELEN(CDUMMY)
+          CALL BUTTSCH(0.8)
           CALL BUTTON(71,CDUMMY(L1:L2),5)
+          CALL BUTTSCH(1.0)
           BG=READF('Background',CDUMMY(L1:L2))
 C
           CALL PGIMAG(IMAGEN,NXMAX,NYMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
@@ -810,7 +825,9 @@ C
           WRITE(CDUMMY,*) BG
           L1=TRUEBEG(CDUMMY)
           L2=TRUELEN(CDUMMY)
+          CALL BUTTSCH(0.8)
           CALL BUTTON(71,CDUMMY(L1:L2),0)
+          CALL BUTTSCH(1.0)
           CALL HELPTEXT('Select option: FILE, ZOOM, LUT,'
      +     //' MEASURE, CALCULATOR or change image cuts')
 C..............................................................................
@@ -831,6 +848,7 @@ C
           CALL ESTADISTICA(NC1,NC2,NS1,NS2,BG,FG)
           CALL HISTOGRAMA(NC1,NC2,NS1,NS2,BG,FG)
 C
+          CALL BUTTSCH(0.8)
           WRITE(CDUMMY,*) BG
           L1=TRUEBEG(CDUMMY)
           L2=TRUELEN(CDUMMY)
@@ -839,6 +857,7 @@ C
           L1=TRUEBEG(CDUMMY)
           L2=TRUELEN(CDUMMY)
           CALL BUTTON(79,CDUMMY(L1:L2),0)
+          CALL BUTTSCH(1.0)
 C
           CALL BUTTON(72,'Max,Min',  0)
 C..............................................................................
@@ -848,7 +867,9 @@ C..............................................................................
      +     'foreground')
           L1=TRUEBEG(CDUMMY)
           L2=TRUELEN(CDUMMY)
+          CALL BUTTSCH(0.8)
           CALL BUTTON(79,CDUMMY(L1:L2),5)
+          CALL BUTTSCH(1.0)
           FG=READF('Foreground',CDUMMY(L1:L2))
 C
           CALL PGIMAG(IMAGEN,NXMAX,NYMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
@@ -859,7 +880,9 @@ C
           WRITE(CDUMMY,*) FG
           L1=TRUEBEG(CDUMMY)
           L2=TRUELEN(CDUMMY)
+          CALL BUTTSCH(0.8)
           CALL BUTTON(79,CDUMMY(L1:L2),0)
+          CALL BUTTSCH(1.0)
           CALL HELPTEXT('Select option: FILE, ZOOM, LUT,'
      +     //' MEASURE, CALCULATOR or change image cuts')
 C..............................................................................
@@ -881,6 +904,7 @@ C desactivamos todos los demas botones
           CALL BUTTON(14,'/',        3)
           CALL BUTTON(15,'x',        3)
           CALL BUTTON(72,'Max,Min',  3)
+          CALL BUTTSCH(0.8)
           WRITE(CDUMMY,*) BG
           L1=TRUEBEG(CDUMMY)
           L2=TRUELEN(CDUMMY)
@@ -889,6 +913,7 @@ C desactivamos todos los demas botones
           L1=TRUEBEG(CDUMMY)
           L2=TRUELEN(CDUMMY)
           CALL BUTTON(79,CDUMMY(L1:L2),3)
+          CALL BUTTSCH(1.0)
 C seleccionamos region del histograma
           CALL ZOOMHISTOG(BG,FG)
           CALL PGIMAG(IMAGEN,NXMAX,NYMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
@@ -909,6 +934,7 @@ C reactivamos todos los demas botones
           CALL BUTTON(14,'/',        0)
           CALL BUTTON(15,'x',        0)
           CALL BUTTON(72,'Max,Min',  0)
+          CALL BUTTSCH(0.8)
           WRITE(CDUMMY,*) BG
           L1=TRUEBEG(CDUMMY)
           L2=TRUELEN(CDUMMY)
@@ -917,6 +943,7 @@ C reactivamos todos los demas botones
           L1=TRUEBEG(CDUMMY)
           L2=TRUELEN(CDUMMY)
           CALL BUTTON(79,CDUMMY(L1:L2),0)
+          CALL BUTTSCH(1.0)
 C
           CALL BUTTON(80,'Histogram',0)
           CALL HELPTEXT('Select option: FILE, ZOOM, LUT,'
