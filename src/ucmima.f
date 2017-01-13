@@ -1130,78 +1130,85 @@ C------------------------------------------------------------------------------
 C definimos nueva region de dibujo para mostrar resultado de la estadistica
         CALL PGSVP(0.00,1.00,0.00,1.00)
         CALL PGSWIN(0.00,1.00,0.00,1.00)
-        CALL PGSCH(0.9)
+        CALL PGSCH(0.8)
 C
         CALL PGSCI(14)
-        CALL PGRECT(0.65,1.00,0.67,0.81)
+        CALL PGRECT(0.65,1.00,0.67,0.82)
         CALL PGSCI(1)
 C
+        CALL PGSCI(1)
+        CALL PGPTEXT(0.87,0.80,0.0,1.0,'pixels in [BG,FG]')
+        CALL PGPTEXT(0.99,0.80,0.0,1.0,'all pixels')
+C
         CALL PGSCI(5)
-        CALL PGPTEXT(0.67,0.78,0.0,0.0,'Npixels:')
+        CALL PGPTEXT(0.66,0.77,0.0,0.0,'Npixels:')
         WRITE(CDUMMY,*) NPIX
         CALL RMBLANK(CDUMMY,CDUMMY,L1)
         CALL PGSCI(7)
         IF(ANYNULL1)THEN
-          CALL PGPTEXT(0.87,0.78,0.0,1.0,'('//CDUMMY(1:L1)//')')
+          CALL PGPTEXT(0.87,0.77,0.0,1.0,'('//CDUMMY(1:L1)//')')
         ELSE
-          CALL PGPTEXT(0.87,0.78,0.0,1.0,CDUMMY(1:L1))
+          CALL PGPTEXT(0.87,0.77,0.0,1.0,CDUMMY(1:L1))
         END IF
         WRITE(CDUMMY,*) NPIXBIS
         CALL RMBLANK(CDUMMY,CDUMMY,L1)
         CALL PGSCI(3)
         IF(ANYNULL2)THEN
-          CALL PGPTEXT(0.99,0.78,0.0,1.0,'('//CDUMMY(1:L1)//')')
+          CALL PGPTEXT(0.99,0.77,0.0,1.0,'('//CDUMMY(1:L1)//')')
         ELSE
-          CALL PGPTEXT(0.99,0.78,0.0,1.0,CDUMMY(1:L1))
+          CALL PGPTEXT(0.99,0.77,0.0,1.0,CDUMMY(1:L1))
         END IF
 C
         CALL PGSCI(5)
-        CALL PGPTEXT(0.67,0.75,0.0,0.0,'Mean')
+        CALL PGPTEXT(0.66,0.74,0.0,0.0,'Mean')
         WRITE(CDUMMY,*) FMEAN
         L1=TRUEBEG(CDUMMY)
         L2=TRUELEN(CDUMMY)
         CALL PGSCI(7)
-        CALL PGPTEXT(0.87,0.75,0.0,1.0,CDUMMY(L1:L2))
+        CALL PGPTEXT(0.87,0.74,0.0,1.0,CDUMMY(L1:L2))
         WRITE(CDUMMYBIS,*) FMEANBIS
         L1BIS=TRUEBEG(CDUMMYBIS)
         L2BIS=TRUELEN(CDUMMYBIS)
         CALL PGSCI(3)
-        CALL PGPTEXT(0.99,0.75,0.0,1.0,CDUMMYBIS(L1BIS:L2BIS))
+        CALL PGPTEXT(0.99,0.74,0.0,1.0,CDUMMYBIS(L1BIS:L2BIS))
 C
         CALL PGSCI(5)
-        CALL PGPTEXT(0.67,0.72,0.0,0.0,'Std.Dev.:')
+        CALL PGPTEXT(0.66,0.71,0.0,0.0,'Std.Dev.:')
         WRITE(CDUMMY,*) FSIGMA
         L1=TRUEBEG(CDUMMY)
         L2=TRUELEN(CDUMMY)
         CALL PGSCI(7)
-        CALL PGPTEXT(0.87,0.72,0.0,1.0,CDUMMY(L1:L2))
+        CALL PGPTEXT(0.87,0.71,0.0,1.0,CDUMMY(L1:L2))
         WRITE(CDUMMYBIS,*) FSIGMABIS
         L1BIS=TRUEBEG(CDUMMYBIS)
         L2BIS=TRUELEN(CDUMMYBIS)
         CALL PGSCI(3)
-        CALL PGPTEXT(0.99,0.72,0.0,1.0,CDUMMYBIS(L1BIS:L2BIS))
+        CALL PGPTEXT(0.99,0.71,0.0,1.0,CDUMMYBIS(L1BIS:L2BIS))
 C
         CALL PGSCI(5)
-        CALL PGPTEXT(0.67,0.69,0.0,0.0,'Median:')
+        CALL PGPTEXT(0.66,0.68,0.0,0.0,'Median:')
         WRITE(CDUMMY,*) FMEDIAN
         L1=TRUEBEG(CDUMMY)
         L2=TRUELEN(CDUMMY)
         CALL PGSCI(7)
-        CALL PGPTEXT(0.87,0.69,0.0,1.0,CDUMMY(L1:L2))
+        CALL PGPTEXT(0.87,0.68,0.0,1.0,CDUMMY(L1:L2))
         WRITE(CDUMMYBIS,*) FMEDIANBIS
         L1BIS=TRUEBEG(CDUMMYBIS)
         L2BIS=TRUELEN(CDUMMYBIS)
         CALL PGSCI(3)
-        CALL PGPTEXT(0.99,0.69,0.0,1.0,CDUMMYBIS(L1BIS:L2BIS))
+        CALL PGPTEXT(0.99,0.68,0.0,1.0,CDUMMYBIS(L1BIS:L2BIS))
 C
         CALL PGSCI(1)
         CALL PGSCH(OLD_CH)
 C------------------------------------------------------------------------------
 C mostramos la misma estadistica en la ventana de texto
-        WRITE(*,101)'------------------------------------'
-        WRITE(*,'(A11,3X,I10,3X,I10)') 'Npixels:   ',NPIX,NPIXBIS
+        WRITE(*,101)'=========================================='
+        WRITE(*,101)'           pixels in [BG,FG]    all pixels'
+        WRITE(*,101)'           =================   ==========='
 C
-        WRITE(*,100) 'Mean:      '
+        WRITE(*,'(A14,4X,I10,4X,I10)') 'Npixels:      ',NPIX,NPIXBIS
+C
+        WRITE(*,100) 'Mean:         '
         WRITE(*,100) '   '
         WRITE(CDUMMY,*) FMEAN
         L1=TRUEBEG(CDUMMY)
@@ -1225,7 +1232,7 @@ C
         END IF
         WRITE(*,101) CDUMMY(L1:L2)
 C
-        WRITE(*,100) 'Std.Dev.:  '
+        WRITE(*,100) 'Std.Dev.:     '
         WRITE(*,100) '   '
         WRITE(CDUMMY,*) FSIGMA
         L1=TRUEBEG(CDUMMY)
@@ -1249,7 +1256,7 @@ C
         END IF
         WRITE(*,101) CDUMMY(L1:L2)
 C
-        WRITE(*,100) 'Median:    '
+        WRITE(*,100) 'Median:       '
         WRITE(*,100) '   '
         WRITE(CDUMMY,*) FMEDIAN
         L1=TRUEBEG(CDUMMY)
@@ -1272,7 +1279,7 @@ C
           END DO
         END IF
         WRITE(*,101) CDUMMY(L1:L2)
-        WRITE(*,101)'------------------------------------'
+        WRITE(*,101)'------------------------------------------'
 C------------------------------------------------------------------------------
 C recuperamos region de dibujo inicial
         CALL PGSVP(XV1,XV2,YV1,YV2)
