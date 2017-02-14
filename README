@@ -1,0 +1,11 @@
+ucmima is a simple Fortran 77 program written by N. Cardiel (cardiel@ucm.es) to
+display FITS images and perform basic measurements.
+
+This program is free software; you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the Free
+Software Foundation; either version 2 of the License, or (at your option) any
+later version.
+
+Maintainer: Nicolás Cardiel, cardiel@ucm.es
+Webpage (documentation): http://ucmima.readthedocs.io/en/latest/
+Webpage (source): https://github.com/nicocardiel/ucmima
