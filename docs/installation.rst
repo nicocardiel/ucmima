@@ -58,7 +58,7 @@ executing configure with the help of the paramter ``F77``. For example, if
    $ make
 
 4.- Finally, you must finish the installation procedure by placing the
-executable file in itsr corresponding directory. If you are
+executable file in its corresponding directory. If you are
 installing the software in the by default directory (``/usr/local/...``), you
 need root privileges:
 
