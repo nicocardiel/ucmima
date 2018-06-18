@@ -7,7 +7,8 @@ Welcome to ucmima's documentation!
 ==================================
 
 **ucmima** is a simple Fortran 77 program written by N. Cardiel
-(cardiel@ucm.es) to display FITS images and perform basic measurements.
+(cardiel@ucm.es) with the help of Sergio Pascual (sergiopr@ucm.es) to display
+FITS images and perform basic measurements.
 
 .. image:: images/ucmima_c1.jpg
    :width: 100%
