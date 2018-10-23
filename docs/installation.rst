@@ -10,9 +10,12 @@ requirement is to have a relatively recent linux distribution, including a
 fortran compiler (e.g. ``g77`` or ``gfortran``) and the GNU ``autotools``.
 
 Before you install **ucmima**, make sure that the graphical library ``PGPLOT``
-is already installed in your computer. Some details about how I do typically
-install this library are given `here
-<https://guaix.fis.ucm.es/~ncl/howto/howto-pgplot>`_.
+and the library ``CFITSIO`` are already installed in your computer. Some details about how I do typically
+install these library are given `here for PGPLOT
+<https://guaix.fis.ucm.es/~ncl/howto/howto-pgplot>`_, and
+`here for CFITSIO
+<https://guaix.fis.ucm.es/~ncl/howto/howto-cfitsio>`_.
+
 
 Installation of **ucmima**
 --------------------------
