@@ -8,6 +8,7 @@ autom4te.cache/
 compile
 config.h
 config.h.in
+config.h.in~
 config.log
 config.status
 configure
@@ -15,6 +16,9 @@ depcomp
 install-sh
 missing
 docs/_build
+docs/ucmima.aux
+docs/ucmima.log
+docs/ucmima.pdf
 src/Makefile
 src/Makefile.in
 src/dimensions.inc
