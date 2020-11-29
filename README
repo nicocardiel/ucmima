@@ -1,6 +1,5 @@
-ucmima is a simple Fortran 77 program written by N. Cardiel (cardiel@ucm.es)
-with the help of Sergio Pascual (sergiopr@fis.ucm.es) to
-display FITS images and perform basic measurements.
+ucmima is a simple Fortran 77 program written by N. Cardiel (cardiel@ucm.es) to
+display FITS images and perform basic photometric measurements.
 
 This program is free software; you can redistribute it and/or modify it
 under the terms of the GNU General Public License as published by the Free
