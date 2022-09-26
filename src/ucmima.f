@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 29-April-2008                                          file: ucmima.f
+C Version 26-September-2022                                      file: ucmima.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -38,6 +38,7 @@ C
         INTEGER LNC1,LNC2,LNS1,LNS2
         INTEGER LADO                         !tama\~{n}o del cuadrado de medida
         INTEGER ILUT
+        INTEGER JUST
         REAL DATAMIN,DATAMAX
         REAL DATAMINBUFF,DATAMAXBUFF
         REAL IMAGEN(NXMAX,NYMAX)
@@ -48,6 +49,7 @@ C
         REAL FMEAN,FSIGMA,FMEDIAN
         CHARACTER*1 CH,COUT,COPER,CLUT
         CHARACTER*5 CNC1,CNC2,CNS1,CNS2,CLADO
+        CHARACTER*6 CJUST
         CHARACTER*80 FITSFILE,FITSFILEBUFF,CDUMMY
         LOGICAL LFIRSTIMAGE
         LOGICAL LBEXIST
@@ -71,6 +73,13 @@ C------------------------------------------------------------------------------
         TR(4)=0.
         TR(5)=0.
         TR(6)=1.
+C
+        JUST=0
+        IF(JUST.EQ.0)THEN
+          CJUST='JUST=0'
+        ELSE
+          CJUST='JUST=1'
+        END IF
 C
         LFIRSTIMAGE=.TRUE.           !la proxima imagen es la primera en leerse
         LZOOM=.FALSE.                    !indica si la imagen actual es un zoom
@@ -118,6 +127,8 @@ C Zoom y restaurar
 C LUT
         CALL BUTTON( 4,'[l]ut '//CLUT, 0)
         CALL BUTTON( 4,'[l]ut '//CLUT, 3)
+C JUST
+        CALL BUTTON(12,CJUST,  0)
 C Medir
         CALL BUTTON( 5,'[m]easure', 0)
         CALL BUTTON( 5,'[m]easure', 3)
@@ -155,7 +166,7 @@ C mensaje indicando como comenzar a trabajar
      +   '"EXIT" to finish the program')
 C------------------------------------------------------------------------------
 C inicialmente mostramos la caja de imagen vacia
-        CALL RPGENV(0.,1.,0.,1.,0,-2)
+        CALL RPGENV(0.,1.,0.,1.,JUST,-2)
         CALL PGBOX('BC',0.0,0,'BC',0.0,0)
         CALL SHOWFITSFILE('NO IMAGE LOADED',DATAMIN,DATAMAX)
 C------------------------------------------------------------------------------
@@ -264,7 +275,7 @@ C
             YMIN=REAL(NS1)-0.5
             YMAX=REAL(NS2)+0.5
             CALL RPGERASW(0.00,0.64,0.045,0.80,0)
-            CALL RPGENV(XMIN,XMAX,YMIN,YMAX,1,-2)
+            CALL RPGENV(XMIN,XMAX,YMIN,YMAX,JUST,-2)
             CALL PGBOX('BCTSNI',0.0,0,'BCTSNI',0.0,0)
           END IF
 C
@@ -360,7 +371,7 @@ C
           YMIN=REAL(NS1)-0.5
           YMAX=REAL(NS2)+0.5
           CALL RPGERASW(0.00,0.64,0.045,0.80,0)
-          CALL RPGENV(XMIN,XMAX,YMIN,YMAX,1,-2)
+          CALL RPGENV(XMIN,XMAX,YMIN,YMAX,JUST,-2)
           CALL PGBOX('BCTSNI',0.0,0,'BCTSNI',0.0,0)
           CALL SHOWFITSFILE('Image: '//FITSFILE(1:TRUELEN(FITSFILE)),
      +     DATAMIN,DATAMAX)
@@ -397,7 +408,7 @@ C..............................................................................
           CALL PALETTE(ILUT)
 C
           CALL RPGERASW(0.00,0.64,0.045,0.80,0)
-          CALL RPGENV(XMIN,XMAX,YMIN,YMAX,1,-2)
+          CALL RPGENV(XMIN,XMAX,YMIN,YMAX,JUST,-2)
           CALL PGBOX('BCTSNI',0.0,0,'BCTSNI',0.0,0)
           CALL SHOWFITSFILE('Image: '//FITSFILE(1:TRUELEN(FITSFILE)),
      +     DATAMIN,DATAMAX)
@@ -731,7 +742,7 @@ C redibujamos el resultado
           YMIN=REAL(NS1)-0.5
           YMAX=REAL(NS2)+0.5
           CALL RPGERASW(0.00,0.64,0.045,0.80,0)
-          CALL RPGENV(XMIN,XMAX,YMIN,YMAX,1,-2)
+          CALL RPGENV(XMIN,XMAX,YMIN,YMAX,JUST,-2)
           CALL PGBOX('BCTSNI',0.0,0,'BCTSNI',0.0,0)
           CALL SHOWFITSFILE('Image: '//FITSFILE(1:TRUELEN(FITSFILE)),
      +     DATAMIN,DATAMAX)
@@ -796,7 +807,7 @@ C
           YMIN=REAL(NS1)-0.5
           YMAX=REAL(NS2)+0.5
           CALL RPGERASW(0.00,0.64,0.045,0.80,0)
-          CALL RPGENV(XMIN,XMAX,YMIN,YMAX,1,-2)
+          CALL RPGENV(XMIN,XMAX,YMIN,YMAX,JUST,-2)
           CALL PGBOX('BCTSNI',0.0,0,'BCTSNI',0.0,0)
           CALL SHOWFITSFILE('Image: '//FITSFILE(1:TRUELEN(FITSFILE)),
      +     DATAMIN,DATAMAX)
@@ -810,6 +821,24 @@ C
           CALL BIGTEXT(1,2)
           CALL BUTTON(11,'[w]hole',0)
 !         CALL BUTTON(11,'[w]hole',3)
+C..............................................................................
+        ELSEIF(NB.EQ.12)THEN
+          CALL BUTTON(12,CJUST,  5)
+          IF(JUST.EQ.0)THEN
+            JUST=1
+            CJUST='JUST=1'
+          ELSE
+            JUST=0
+            CJUST='JUST=0'
+          END IF
+          CALL RPGERASW(0.00,0.64,0.045,0.80,0)
+          CALL RPGENV(XMIN,XMAX,YMIN,YMAX,JUST,-2)
+          CALL PGBOX('BCTSNI',0.0,0,'BCTSNI',0.0,0)
+          CALL SHOWFITSFILE('Image: '//FITSFILE(1:TRUELEN(FITSFILE)),
+     +     DATAMIN,DATAMAX)
+          CALL PGIMAG(IMAGEN,NXMAX,NYMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
+          CALL PGIMAGSMALL(NC1,NC2,NS1,NS2,FG,BG,0)
+          CALL BUTTON(12,CJUST,  0)
 C..............................................................................
         ELSEIF(NB.EQ.13)THEN
           CALL BUTTON(13,CLADO,  5)
