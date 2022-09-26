@@ -118,7 +118,7 @@ C Fichero y Salir
         CALL BUTTON( 1,'[l]oad',     0)
         CALL BUTTON( 2,'[s]ave', 0)
         CALL BUTTON( 2,'[s]ave', 3)
-        CALL BUTTON( 9,'e[x]it',    0)
+        CALL BUTTON( 9,'e[xX]it',    0)
 C Zoom y restaurar
         CALL BUTTON( 3,'[z]oom',  0)
         CALL BUTTON( 3,'[z]oom',  3)
@@ -186,6 +186,9 @@ C buscamos aceleradores
           NBLOCAL=5
         ELSEIF(CH.EQ.'x')THEN
           NBLOCAL=9
+        ELSEIF(CH.EQ.'X')THEN
+          CALL PGEND
+          STOP
         ELSEIF(CH.EQ.'w')THEN
           NBLOCAL=11
         ELSEIF(CH.EQ.',')THEN
@@ -426,7 +429,7 @@ C..............................................................................
 C desactivamos todos los demas botones
           CALL BUTTON( 1,'[l]oad',     3)
           CALL BUTTON( 2,'[s]ave', 3)
-          CALL BUTTON( 9,'e[x]it',    3)
+          CALL BUTTON( 9,'e[xX]it',    3)
           CALL BUTTON( 3,'[z]oom',  3)
           CALL BUTTON( 4,'[l]ut '//CLUT,  3)
           CALL BUTTON(11,'[w]hole',3)
@@ -493,7 +496,7 @@ C medimos
 C reactivamos todos los demas botones
           CALL BUTTON( 1,'[l]oad',     0)
           CALL BUTTON( 2,'[s]ave', 0)
-          CALL BUTTON( 9,'e[x]it',    0)
+          CALL BUTTON( 9,'e[xX]it',    0)
           CALL BUTTON( 3,'[z]oom',  0)
           CALL BUTTON( 4,'[l]ut '//CLUT,  0)
           IF((LZOOM).OR.(LMEDIR)) CALL BUTTON(11,'[w]hole',0)
@@ -542,7 +545,7 @@ C se activan solo estos dos
 C desactivamos todos los demas botones
           CALL BUTTON( 1,'[l]oad',     3)
           CALL BUTTON( 2,'[s]ave', 3)
-          CALL BUTTON( 9,'e[x]it',    3)
+          CALL BUTTON( 9,'e[xX]it',    3)
           CALL BUTTON( 3,'[z]oom',  3)
           CALL BUTTON( 4,'[l]ut '//CLUT,  3)
           CALL BUTTON( 5,'[m]easure',    3)
@@ -758,7 +761,7 @@ C desactivamos estos dos seguro
 C activamos los que estaban desactivados
           CALL BUTTON( 1,'[l]oad',     0)
           CALL BUTTON( 2,'[s]ave', 0)
-          CALL BUTTON( 9,'e[x]it',    0)
+          CALL BUTTON( 9,'e[xX]it',    0)
           CALL BUTTON( 3,'[z]oom',  0)
           CALL BUTTON( 4,'[l]ut '//CLUT,  0)
           CALL BUTTON( 5,'[m]easure',    0)
@@ -776,7 +779,7 @@ C activamos los que estaban desactivados
           CALL BIGTEXT(1,5)
 C..............................................................................
         ELSEIF(NB.EQ.9)THEN
-          CALL BUTTON(9,'e[x]it',5)
+          CALL BUTTON(9,'e[xX]it',5)
           CALL BIGTEXT(0,1)
           CALL HELPTEXT('This option ends the program execution')
           COUT=READC('Do you really want to exit (y/n)','n','yn')
@@ -789,7 +792,7 @@ C..............................................................................
      +       //' MEASURE, CALCULATOR or change image cuts')
           END IF
           CALL BIGTEXT(1,1)
-          CALL BUTTON(9,'e[x]it',0)
+          CALL BUTTON(9,'e[xX]it',0)
 C..............................................................................
         ELSEIF(NB.EQ.11)THEN
           CALL BUTTON(11,'[w]hole',5)
@@ -949,7 +952,7 @@ C..............................................................................
 C desactivamos todos los demas botones
           CALL BUTTON( 1,'[l]oad',     3)
           CALL BUTTON( 2,'[s]ave', 3)
-          CALL BUTTON( 9,'e[x]it',    3)
+          CALL BUTTON( 9,'e[xX]it',    3)
           CALL BUTTON( 3,'[z]oom',  3)
           CALL BUTTON( 4,'[l]ut '//CLUT,  3)
           CALL BUTTON(11,'[w]hole',3)
@@ -979,7 +982,7 @@ C seleccionamos region del histograma
 C reactivamos todos los demas botones
           CALL BUTTON( 1,'[l]oad',     0)
           CALL BUTTON( 2,'[s]ave', 0)
-          CALL BUTTON( 9,'e[x]it',    0)
+          CALL BUTTON( 9,'e[xX]it',    0)
           CALL BUTTON( 3,'[z]oom',  0)
           CALL BUTTON( 4,'[l]ut '//CLUT,  0)
           IF(LZOOM) CALL BUTTON(11,'[w]hole',0)

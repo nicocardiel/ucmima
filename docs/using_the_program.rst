@@ -39,8 +39,8 @@ Several buttons provide access to different operations:
    ``[s]ave``: save current FITS image (that may have been
    modified
 
-   ``e[x]it``: finish the program execution by the user by
-   applying different mathematical operations)
+   ``e[xX]it``: finish the program execution (the uppercase ``X`` does not 
+   prompt for confirmation)
 
 
 *ZOOM* section:
@@ -48,6 +48,9 @@ Several buttons provide access to different operations:
    ``[z]oom``: zoom in the image
 
    ``[w]ole``: zoom out the image
+
+   ``JUST=0``: if JUST=1, the scales of the x and y axes will be equal;
+   otherwise (JUST=0) they will be scaled independently
 
 *LUT* section:
 
