@@ -57,7 +57,19 @@ executing configure with the help of the paramter ``F77``. For example, if
 ::
 
    $ make clean
-   $ ./configure F77=g95
+   $ ./configure F77=g95  NXMAX=4300 NYMAX=4300
+   $ make
+
+Note that in the configure instruction we are also defining ``NXMAX`` and
+``NYMAX``, the maximum allowed dimensions of the FITS images.
+
+
+Mac users typically will need something like:
+
+::
+
+   $ make clean
+   $ ./configure F77=gfortran-mp-13 CC=gcc-mp-13
    $ make
 
 4.- Finally, you must finish the installation procedure by placing the
